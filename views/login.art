@@ -1,0 +1,73 @@
+{{extend './common/layout.art'}}
+{{block 'title'}}
+    login
+{{/block}}
+
+{{block 'link'}}
+   {{include './common/layui.art'}}
+   {{include './common/jQuery.art'}}
+   <link rel="stylesheet" href="/css/login.css">
+{{/block}}
+
+{{block 'main'}}
+    <div class="layui-container">
+        {{if msg}}
+        <div class='layui-bg-red', id='error'>{{msg}}</div>
+        {{/if}}
+        <form class="layui-form" action="/login" method="post">
+            <div class="layui-form-item">
+              <label class="layui-form-label">邮箱</label>
+              <div class="layui-input-block">
+                <input type="text" name="email" required  lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input" id='email'>
+              </div>
+            </div>
+
+            <div class="layui-form-item">
+              <label class="layui-form-label">密码</label>
+              <div class="layui-input-inline">
+                <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-form-mid layui-word-aux">随意</div>
+            </div>
+
+            <div class="layui-form-item">
+                <a href="/login/register" class="layui-font-green" id='register'>账号注册</a>
+            </div>
+
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                  <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                  <button type="reset" class="layui-btn layui-btn-primary layui-border-green">重置</button>
+                </div>
+              </div>
+        </form>
+    </div>
+{{/block}}
+{{block 'script'}}
+    <script type='text/javascript'>
+        let isValid =false, val, lastVal
+        //用户名检索
+        $('#email').blur(function(){
+            lastVal = val
+            val = $('#email').val()
+            if(isValid){
+                if(lastVal == val) return false
+            }
+            // console.log(lastVal == val)
+            $.ajax({
+                url:'/login/emailValid',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({email: val}),
+                success:function(data){
+                    console.log(1)
+                    isValid = true
+                    layer.msg(data.msg)
+                },
+                error:function(e){
+                    console.log(e)
+                }
+            })
+        })
+    </script>
+{{/block}}

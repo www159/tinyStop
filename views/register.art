@@ -1,0 +1,170 @@
+{{extend './common/layout.art'}}
+
+{{block 'title'}}
+    register
+{{/block}}
+
+{{block 'link'}}
+    {{include './common/layui.art'}}
+    {{include './common/jQuery.art'}}
+    <link rel="stylesheet" href="/css/register.css">
+{{/block}}
+
+{{block 'main'}}
+<div class="layui-container">
+  <form class="layui-form" action="/login/register" method="post">
+      <div class="layui-form-item">
+        <label class="layui-form-label">昵称</label>
+        <div class="layui-input-block">
+          <input type="text" name="username" required  lay-verify="required" placeholder="随便" autocomplete="off" class="layui-input">
+        </div>
+      </div>
+    
+    
+      <div class="layui-form-item">
+        <label class="layui-form-label">邮箱</label>
+        <div class="layui-input-inline">
+          <input type="text" name="email" required  lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input" id='email'> 
+        </div>
+        <span class='layui-form-mid' id='emailTip'></span>
+      </div>
+  
+      <div class="layui-form-item">
+        <label class="layui-form-label">密码</label>
+        <div class="layui-input-inline">
+          <input type="password" name="password" required lay-verify="required" placeholder="请输入密码" autocomplete="off" class="layui-input" id='password'>
+        </div>
+        <div class="layui-form-mid layui-word-aux">密码为6到18位字符，必须包含数字、字母、特殊字符</div>
+      </div>
+  
+      <div class="layui-form-item">
+          <label class="layui-form-label">授权码</label>
+          <div class="layui-input-block">
+            <input type="text" name="key" required  lay-verify="required" placeholder="请联系管理员获得授权码" autocomplete="off" class="layui-input">
+          </div>
+        </div>
+  
+        <div class="layui-form-item">
+          <label class="layui-form-label">验证码</label>
+          <div class="layui-input-inline">
+            <input type="text" name="code" required  lay-verify="required" placeholder="请输验证码" autocomplete="off" class="layui-input">
+          </div>
+          <button type="button" class="layui-btn layui-btn-primary layui-border-green" id='getValid'>获取验证码</button>
+        </div>
+  
+      <div class="layui-form-item">
+        <div class="layui-input-block">
+          <button class="layui-btn" lay-submit lay-filter="formDemo">注册</button>
+          <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+      </div>
+    </form>
+</div>
+   
+
+{{/block}}
+{{block 'script'}}
+  <script>
+    let isValid =false, val, lastVal
+        //用户名检索
+    $('#email').blur(function(){
+        lastVal = val
+        val = $('#email').val()
+        if(isValid){
+            if(lastVal == val) return false
+        }
+        // console.log(lastVal == val)
+        $.ajax({
+            url:'/login/register/emailValid',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({email: val}),
+            success:function(data){
+                isValid = true
+                // console.log(data.msg)
+                let emaliTip = $('#emailTip')
+                emaliTip.text(data.msg)
+                emaliTip.attr('class',  `layui-form-mid ${data.class}`)
+            },
+            error:function(e){
+                console.log(e)
+            }
+        })
+    })
+    //验证码业务
+    let cnt = 60
+    let curcnt, timer
+    let validbtn = $('#getValid')
+    validbtn.click(function(){
+      //确保邮箱万无一失
+      let email = $('#email').val()
+      validbtn.addClass('layui-btn-disabled')
+      curcnt = cnt
+      validbtn.text(`${curcnt}s`)
+      //异步计时器
+      let timer = window.setInterval(() => {
+        if(curcnt){
+          curcnt--
+          validbtn.text(`${curcnt}s`)
+        }
+        else{
+          validbtn.removeClass('layui-btn-disabled')
+          validbtn.text('获得验证码')
+          window.clearInterval(timer)
+        }
+      }, 1000)
+      $.ajax({
+        url:'/login/register/code',
+        data:JSON.stringify({email}),
+        type: 'post',
+        contentType:'application/json',
+        success:function(data){
+          layer.msg('验证码已发送')
+        },
+        error:function(e){
+          console.error(e)
+        }
+      })
+    })
+
+    //注册拦截，针对邮箱问题
+    layui.use(['form', 'layer'], () => {
+      let form = layui.form
+      let layer = layui.layer
+      form.on('submit(formDemo)', (data) => {
+        let emailTip = $('#emailTip')
+        if('邮箱正确' !== emailTip.text()){//邮箱拦截器
+          layer.msg('请再次确认邮箱')
+          return false
+        }
+        //使用ajax代替form
+        $.ajax({
+          url: '/login/register',
+          type: 'POST',
+          data: JSON.stringify(data.field),
+          contentType: 'application/json',
+          success: function(res){
+            if(res.msg){
+              layer.msg(res.msg)
+            }
+            else{
+              layer.open({
+                type: 0,
+                content: '注册成功',
+                btn: ['确认'],
+                yes: function(index, layero){
+                  window.location.href = '/login'
+                  layer.close(index)
+                }
+              })
+            }
+          },
+          error: function(e){
+            console.error(e)
+          }
+        });
+        return false;
+      })
+    })
+  </script>
+{{/block}}

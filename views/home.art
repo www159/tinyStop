@@ -1,0 +1,92 @@
+{{extend './common/layout.art'}}
+
+{{block 'title'}}
+    home
+{{/block}}
+
+{{block 'link'}}
+    {{include './common/layui.art'}}
+    {{include './common/jQuery.art'}}
+{{/block}}
+
+{{block 'main'}}
+    <div class="layui-layout">
+        <div class="layui-layout-header">
+            <ul class="layui-nav" lay-filter='nav'>
+                <li class="layui-nav-item layui-this ">
+                    <a href="javascript:void(0);" id='main'>主页</a>
+                  </li>
+                  <li class="layui-nav-item">
+                    <a href="javascript:void(0);" id='func'>功能区</a>
+                  </li>
+                  <li class="layui-nav-item layui-col-md-offset8" lay-unselect="">
+                    <a href="javascript:void(0);"><img src="//t.cn/RCzsdCq" class="layui-nav-img"></a>
+                    <dl class="layui-nav-child">
+                      <dd><a href="javascript:;">编辑</a></dd>
+                      <dd><a href="javascript:;">关于</a></dd>
+                      <hr>
+                      <dd style="text-align: center;"><a href="">退出</a></dd>
+                    </dl>
+                  </li>
+            </ul>
+        </div>
+    </div>
+{{/block}}
+
+{{block 'script'}}
+    <script>
+        layui.use(['form', 'element'], () => {
+            let elem = layui.element
+            let form = layui.form
+            elem.on('nav(nav)', (ele) => {
+                //高亮显示
+                let item = $('#'+ele[0].id).parent()
+                let items = $('.layui-nav-item')
+                // console.log(items[0])
+                for(let i in items){
+                    $(i).removeClass('layui-this')
+                }
+                if(item.children().length == 1){
+                    item.addClass('layui-this')
+                }
+
+                let funcReqCnt = false
+                //申请ajax渲染
+                if(!funcReqCnt){
+                    $.ajax({
+                    url: `/home/${ele[0].id}`,
+                    type: 'get',
+                    data:{},
+                    success: (res) => {
+                        console.log(res)
+                        funcReqCnt = true
+                        let main = $('.layui-layout')
+                        main.html(main.html().concat(res))
+                        form.render()
+                        elem.render()
+                    }
+                })
+                }
+            })
+            let hasTodoRender = false
+            elem.on('collapse(todo)', (data) => {
+                if(data.show && !hasTodoRender){
+                    layer.msg('打开todo-list', {
+                        time: 0,
+                        btn: ['好吧', '不要'],
+                        btn1: (index, layero) => {
+                            //ajax渲染todoList
+                            $('#todoFrame').attr('src', '/html/todoList.html')
+                            hasTodoRender = true
+                            layer.close(index)
+                        },
+                        btn2: (index, layero) => {
+                            layer.msg('...')
+                            return false
+                        }
+                    })
+                }
+            })
+        })
+    </script>
+{{/block}}
