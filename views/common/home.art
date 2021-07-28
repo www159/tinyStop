@@ -1,0 +1,50 @@
+{{extend './layout.art'}}
+
+{{block 'title'}}
+    home
+{{/block}}
+
+{{block 'link'}}
+    {{include './layui.art'}}
+    {{include './jQuery.art'}}
+    {{block 'link1'}}
+
+    {{/block}}
+{{/block}}
+
+{{block 'main'}}
+    <div class="layui-layout">
+        <div class="layui-header">
+            <ul class="layui-nav" lay-filter='nav'>
+                <li class="layui-nav-item {{id === 'main' ? 'layui-this' : ''}} layui-col-md-offset1">
+                    <a href="javascript:void(0);" id='main'>主页</a>
+                  </li>
+                  <li class="layui-nav-item {{id === 'func' ? 'layui-this' : ''}}">
+                    <a href="javascript:void(0);" id='func' >功能区</a>
+                  </li>
+                  <li class="layui-nav-item {{id === 'back' ? 'layui-this' : ''}}">
+                    <a href="javascript:void(0);" id='back'>后台管理</a>
+                  </li>
+                  <li class="layui-nav-item layui-col-md-offset6" lay-unselect="">
+                    <a href="javascript:void(0);"><img src="//t.cn/RCzsdCq" class="layui-nav-img"></a>
+                    <dl class="layui-nav-child">
+                      <dd><a href="javascript:;">编辑</a></dd>
+                      <dd><a href="javascript:;">关于</a></dd>
+                      <hr>
+                      <dd style="text-align: center;"><a href="">退出</a></dd>
+                    </dl>
+                  </li>
+            </ul>
+        </div>
+        {{block 'body'}}
+
+        {{/block}}
+    </div>
+{{/block}}
+
+{{block 'script1'}}
+    <script src = "/js/home.js"></script>
+    {{block 'script'}}
+
+    {{/block}}
+{{/block}}

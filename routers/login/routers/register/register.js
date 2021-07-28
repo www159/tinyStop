@@ -1,4 +1,4 @@
-const {User} = require('../../../model/user')
+const {User} = require('../../../../model/user')
 const bcrypt = require('bcrypt')
 let rootCode = '18181818'
 module.exports = async (req, res) => {

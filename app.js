@@ -7,7 +7,8 @@ const path = require('path')
 const app = express()
 
 
-
+//icon
+app.use(require('express-favicon')(path.join(__dirname, '/public/favicon.ico')))
 //create connection to DB
 // require('./model/connectToUsersDB')
 

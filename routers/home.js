@@ -3,7 +3,7 @@ const router = require('express').Router()
 
 
 router.get('/', (req, res) => {
-    res.render('home')
+    res.redirect('home/main')
 })
 
 
@@ -12,11 +12,19 @@ router.get('/func', require('./home/func'))
 
 
 
-router.get('/main', require('./home/main'))
+router.use('/main', require('./home/main'))
+
+
+
+router.get('/back', require('./home/back'))
 
 
 
 router.use('/todo', require('./home/todo'))
+
+
+
+router.use('/btn', require('./home/routers/funcRouter'))
 
 
 

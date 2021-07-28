@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src='/layui/layui.js'></script>
+    <script src="/js/jQuery.js"></script>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <!-- <link rel="stylesheet" href="/css/area-select.css"> -->
+</head>
+<body>
+    <div class="layui-form">
+        <div class="layui-form-item" id="area">
+            <div class="layui-form-label">你在</div>
+            <div class="layui-input-inline" style="width: 100px;">
+                <select name="province" class="province-selector" data-value={{area ? area.province : '浙江'}}>
+                    <!-- <option value="">--选择省--</option> -->
+                </select>
+            </div>
+            <div class="layui-input-inline" style="width: 100px;">
+                <select name="city" class="city-selector" data-value={{area ? area.city : '丽水'}}>
+                    <!-- <option value="">--选择市--</option> -->
+                </select>
+            </div>
+            <div class="layui-input-inline" style="width: 100px;">
+                <select name="county" class="county-selector" data-value={{area ? area.county : '莲都'}}>
+                    <!-- <option value="">--选择区--</option> -->
+                </select>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="area-confirm">确认</button>
+                <button class="layui-btn layui-btn-primary" id='exit'>退出</button>
+              </div>
+        </div>
+    </div>
+    <script>
+        layui.config({
+                base: '/layuiPlugin/',
+                version: '1.0'
+        })
+        layui.use(['form', 'layer', 'layarea'], function(){
+            let layarea = layui.layarea,
+                form = layui.form,
+                layer = layui.lay
+
+            let lastCode = ''
+
+            layarea.render({
+                elem: '#area',
+                change: function(data){
+                    lastCode = data.code
+                    // console.log(lastCode)
+                }
+            })
+
+            $('#exit').on('click', function(e){
+                let index = parent.layer.getFrameIndex(window.name)
+                parent.layer.close(index)
+            })
+
+            form.on('submit(area-confirm)', function(data){
+                if(!lastCode){
+                    alert('选了再提交>_<')
+                }
+                else{
+                    // console.log(data.field)
+                    $.ajax({
+                        url: '/home/main/area',
+                        type: 'post',
+                        data: JSON.stringify({code: `101${lastCode}`}),
+                        contentType: 'application/json'
+                    }).done(function(res){//设置父窗值，退出自己
+                        parent.solveWeather(res)
+                        let index = parent.layer.getFrameIndex(window.name)
+                        parent.layer.close(index)
+                })
+                }
+            })
+        })
+    </script>
+</body>
+</html>

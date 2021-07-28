@@ -14,6 +14,6 @@ router.post('/emailValid', require('./login/emailValid'))
 
 
 //register router
-router.use('/register', require('./routers/register'))
+router.use('/register', require('./login/routers/register'))
 
 module.exports = router

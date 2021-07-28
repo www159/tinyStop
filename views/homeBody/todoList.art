@@ -58,7 +58,7 @@
 		<script src="/js/base.js"></script>
 		<script src="/js/template-web.js"></script>
 		<script type="text/html" id='taskTpl'>
-			<!-- {{each tasks}}
+			{{each tasks}}
 			<li>
 				<div class="view">
 					<input class="toggle" type="checkbox">
@@ -67,7 +67,7 @@
 				</div>
 				<input class="edit" value="Rule the web">
 			</li>
-			{{/each}} -->
+			{{/each}}
 		</script>
 		<script src="/js/todoList.js"></script>
 	</body>

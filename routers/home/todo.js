@@ -1,17 +1,10 @@
 const router = require('express').Router()
 
 
-
-router.get('/', (req, res) => {
-    res.render('./homeBody/todoList')
-})
-
-
-
 const {createModel} = require('../../model/todo')
 
 router.get('/tasks', async (req, res) => {//get all tasks
-    let TodoList = await createModel(req.session.userInfo.username)
+    let TodoList = createModel(req.session.userInfo.username)
     let tasks = await TodoList.find({}).lean()
     console.log('get tasks: ', tasks)
     res.json(tasks)
@@ -22,7 +15,7 @@ router.get('/tasks', async (req, res) => {//get all tasks
 router.post('/addTask', async(req, res) => {//add task
     let {name} = req.body
     // res.send(name)
-    let TodoList = await createModel(req.session.userInfo.username)
+    let TodoList = createModel(req.session.userInfo.username)
     let newTask = await TodoList.create({
         name: name,
         state: 0
@@ -34,7 +27,7 @@ router.post('/addTask', async(req, res) => {//add task
 
 router.delete('/tasks/:id', async (req, res) => {//delete task
     let {id} = req.params
-    let TodoList = await createModel(req.session.userInfo.username)
+    let TodoList = createModel(req.session.userInfo.username)
     let task = await TodoList.findOne({_id: id})
     await TodoList.findOneAndDelete({_id: id})
     res.json(task)
@@ -45,7 +38,7 @@ router.delete('/tasks/:id', async (req, res) => {//delete task
 router.delete('/clearCompleted', async (req, res) => {//clear completed
     let {deleteTask} = req.body
     // console.log(deleteTask)
-    let TodoList = await createModel(req.session.userInfo.username) 
+    let TodoList = createModel(req.session.userInfo.username) 
     // console.log(await TodoList.find({_id: {$in: deleteTask}}))
     await TodoList.deleteMany({_id: {$in: deleteTask}})
     res.send('delete!')
@@ -63,6 +56,7 @@ router.put('/tasks', async (req, res) => {
 })
 
 
+
 router.put('/tasksName', async (req, res) => {
     let TodoList = await createModel(req.session.userInfo.username)
     let {id, newName} = req.body
@@ -70,4 +64,7 @@ router.put('/tasksName', async (req, res) => {
     let task = await TodoList.findOne({_id: id})
     res.json(task)
 })
+
+
+
 module.exports = router

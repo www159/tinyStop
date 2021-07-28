@@ -1,0 +1,244 @@
+{{extend '../common/home'}}
+{{block 'link1'}}
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/iconfont.css">
+{{/block}}
+{{block 'body'}}
+  <!-- 轮播图片 -->
+      <div class="layui-container">
+          <div class="layui-carousel layui-col-m4" id="display">
+            <div carousel-item>
+              <div><img src="/img/1.jpg" alt="tu1"></div>
+              <div><img src="/img/2.jpg" alt="tu2"></div>
+              <div><img src="/img/3.jpg" alt="tu3"></div>
+              <div><img src="/img/4.jpg" alt="tu4"></div>
+              <div><img src="/img/5.jpg" alt="tu5"></div>
+            </div>
+          </div>
+
+          <div class="layui-side layui-col-md2">
+            <div class="layui-card" id="card1">
+              <div class="layui-card-header">个人介绍</div>
+              <div class="layui-card-body">
+                卡片式面板面板通常用于非白色背景色的主体内<br>
+                从而映衬出边框投影
+              </div>
+            </div>
+                
+            <div class="layui-card" id="card1">
+              <div class="layui-card-header">搜索</div>
+              <div class="layui-card-body">
+                卡片式面板面板通常用于非白色背景色的主体内<br>
+                从而映衬出边框投影
+              </div>
+            </div>
+        
+            <div class="layui-card" id="card1">
+              <div class="layui-card-header">目录</div>
+              <div class="layui-card-body">
+                卡片式面板面板通常用于非白色背景色的主体内<br>
+                从而映衬出边框投影
+              </div>
+            </div>
+          </div>
+
+        <!-- <</div> -->
+        <div class="layui-panel layui-bg-green layui-col-md3" id="spiderCard">
+          <div id="weather-card">
+            <div class="layui-col-md6">
+              <i class="layui-icon layui-icon-location"></i>
+              <span id='area'>
+                {{weather.area}}
+              </span>
+              <button class="layui-btn layui-btn-xs layui-btn-primary layui-border-black layui-col-md-offset1" id="area-btn">切换</button>
+              <div id="real-temperature">{{weather.temperature}}<span style="font-size: 50%;">&#x2103 &nbsp; <span class="weather">{{weather.cloud}}</span></span></div>
+              <div>空气&nbsp;<span id="air-qulity" style="color: {{weather.aqiColor}};">{{weather.aqi}}</span>&#xff5c&nbsp;<span class="wind-direction">{{weather.windDirection}}</span>&nbsp;<span id="wind-rank">{{weather.windRank}}</span></div>
+            </div>
+            <div class="layui-col-md-offset2">
+              <button type="button" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-primary layui-border-black" id="weather-detail">
+                <i class="layui-icon layui-icon-right">详情</i>
+              </button>
+            </div>
+
+          </div>
+
+          <ul class="layui-menu layui-bg-green" id="new-menu">
+            {{each news}}
+              <li class="layui-menu-item-parent" lay-options="{type: 'parent'}">
+                <div class="layui-menu-body-title">
+                  <a href="{{$value.href}}">{{$value.tittle}}</a>
+                  <!-- <span id="hot-sign">{{$value.hot}}</span> -->
+                  <i class="layui-icon layui-icon-right"></i>
+                </div>
+                <div class="layui-panel layui-menu-body-panel" id='img-panel'>
+                      <div class="layui-menu-body-title" id="new-img-con">
+                        <img id="new-img" src="{{$value.imgSrc}}">
+                      </div>
+                </div>
+              </li>
+            {{/each}}
+          </ul>
+        
+        </div>   
+        <div class="layui-card" id="card0">
+          <div class="layui-card-body">
+            <div class="layui-row">
+              <div class="layui-btn-group">
+                  <button type="button" class="layui-btn layui-btn-primary" id="micro">
+                      <span class="iconfont icon-suolvetuxianshi"></span>
+                    </button>
+                  <button type="button" class="layui-btn layui-btn-primary" id="table">
+                    <span class="iconfont icon-liebiao"></span>
+                  </button>
+              </div> 
+              <div class="layui-row">
+                  <div id="arti-list">
+                    <div id="arti-info">
+                      <div id="arti-info-r">
+                        <div id="arti-cover">
+                          <a href="" target="_blank" rel="noopener noreferrer">
+                            <img src="/img/1.jpg" alt="test">
+                          </a>
+                        </div>
+                      </div>
+                      <div id="arti-info-l">
+                        <a href="javascript:void(0);">
+                          <h2>呵呵呵吼吼吼吼吼吼吼吼吼吼吼吼吼吼吼吼呵呵呵</h2>
+                        </a>
+                        <div id="arti-footer">
+                          <div id="author">
+                            www
+                          </div>
+                          <div id="comment">
+                            0点赞
+                          </div>
+                          <div id="date">
+                            2001-1-1
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div id="arti-info">
+                      <div id="arti-info-r">
+                        <div id="arti-cover">
+                          <a href="" target="_blank" rel="noopener noreferrer">
+                            <img src="/img/1.jpg" alt="test">
+                          </a>
+                        </div>
+                      </div>
+                      <div id="arti-info-l">
+                        <a href="javascript:void(0);">
+                          <h2>吼吼吼吼呵呵呵</h2>
+                        </a>
+                        <div id="arti-footer">
+                          <div id="author">
+                            www
+                          </div>
+                          <div id="comment">
+                            0点赞
+                          </div>
+                          <div id="date">
+                            2001-1-1
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>   
+          </div>
+        </div>
+      </div>
+
+  
+{{/block}}
+
+{{block 'script'}}
+    <script type="text/html" id="flow-li">
+      <div id="arti-info">
+        <div id="arti-info-r">
+          <div id="arti-cover">
+            <a href="" target="_blank" rel="noopener noreferrer">
+              <img src="./1.jpg" alt="test">
+            </a>
+          </div>
+        </div>
+        <div id="arti-info-l">
+          <a href="javascript:void(0);">
+            <h2><%title%></h2>
+          </a>
+          <div id="arti-footer">
+            <div id="author">
+              <%author%>
+            </div>
+            <div id="comment">
+              <%good%>点赞
+            </div>
+            <div id="date">
+              <%date%>
+            </div>
+          </div>
+        </div>
+      </div>
+    </script>
+
+    <script>
+        layui.use('carousel', function(){
+            let carousel = layui.carousel
+
+            carousel.render({
+                elem: '#display',
+                arrow: 'hover'
+            })
+        })
+    </script>
+    <!-- 获得天气 -->
+    <!-- dom操作TODO,归到服务端 -->
+    <!-- <script src="/js/main.js"></script> -->
+    <script>
+   
+
+      layui.use('flow', function(){
+        let flow = layui.flow
+        flow.load({
+          elem: '#arti-list',
+          scrollElem: '#arti-list',
+          done: function(page, next){
+
+          }
+        })
+      })
+
+      // 触发切换地点事件
+      $('#area-btn').on('click', function(e){
+        //向浏览器请求弹出层html
+        layer.open({
+            type: 2,
+            title: '请选择地区',
+            area: ['40%', '60%'],
+            content: ['/home/main/area-btn', 'no'],
+      })
+    })
+
+    $('#weather-detail').on('click', function(e){
+      layer.msg('代开发>_<')
+    })
+      
+    $('#micro').on('click', function(e){
+      layer.msg('缩略图')
+    })
+
+    $('#table').on('click', function(e){
+      layer.msg('列表')
+    })
+
+      function solveWeather(data){
+        // console.log(data)
+        $('#area').text(data.area)
+        $('#real-temperature').text(data.temperature)
+        $('.weather').text(data.cloud)
+        $('#air-qulity').text(data.aqi)
+        $('#wind-direction').text(data.windDirection)
+        $('#wind-rank').text(data.windRank)
+      }
+    </script>
+{{/block}}

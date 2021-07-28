@@ -11,17 +11,9 @@ const mongoose = require('mongoose');
 //             console.log('failed to connect')
 //         })
 
-let connection = async() => {
-    try{
-        return await mongoose.createConnection('mongodb://www159:064919@localhost:27017/todo', 
-        { 
-            useNewUrlParser: true,
-            useUnifiedTopology: true 
-        })
-    }
-    catch(e){
-        console.log(e)
-    }
-}
 
-module.exports = connection
+module.exports = mongoose.createConnection('mongodb://www159:064919@localhost:27017/todo', 
+{ 
+    useNewUrlParser: true,
+    useUnifiedTopology: true 
+})
