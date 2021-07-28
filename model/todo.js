@@ -13,15 +13,8 @@ let schema = new mongoose.Schema({
     }
 })
 
-createModel = async (name) => {
-    try{
-        return (await require('./connectToTodoDB')()).model(name, schema)
-    }
-    catch(e){
-        console.log(e)
-    }
-
+createModel = (name) => {
+    return require('./privateDB').model(name, schema)
 }
-
 
 module.exports = {createModel}
