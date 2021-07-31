@@ -1,12 +1,11 @@
 const router = require('express').Router()
 
 
-const {createModel} = require('../../model/todo')
+const Todo = require('../../model/todo')
 
 router.get('/tasks', async (req, res) => {//get all tasks
-    let TodoList = createModel(req.session.userInfo.username)
-    let tasks = await TodoList.find({}).lean()
-    console.log('get tasks: ', tasks)
+    let tasks = await Todo.find({author: req.session.userInfo._id}).lean()
+    // console.log('get tasks: ', tasks)
     res.json(tasks)
 })
 
@@ -15,10 +14,10 @@ router.get('/tasks', async (req, res) => {//get all tasks
 router.post('/addTask', async(req, res) => {//add task
     let {name} = req.body
     // res.send(name)
-    let TodoList = createModel(req.session.userInfo.username)
-    let newTask = await TodoList.create({
+    let newTask = await Todo.create({
         name: name,
-        state: 0
+        state: 0,
+        author: req.session.userInfo._id
     })
     res.json(newTask)
 })
@@ -27,41 +26,36 @@ router.post('/addTask', async(req, res) => {//add task
 
 router.delete('/tasks/:id', async (req, res) => {//delete task
     let {id} = req.params
-    let TodoList = createModel(req.session.userInfo.username)
-    let task = await TodoList.findOne({_id: id})
-    await TodoList.findOneAndDelete({_id: id})
+    let task = await Todo.findOne({_id: id})
+    await Todo.findOneAndDelete({_id: id})
     res.json(task)
 })
 
 
 
 router.delete('/clearCompleted', async (req, res) => {//clear completed
-    let {deleteTask} = req.body
-    // console.log(deleteTask)
-    let TodoList = createModel(req.session.userInfo.username) 
+    let {deleteTask} = req.body 
     // console.log(await TodoList.find({_id: {$in: deleteTask}}))
-    await TodoList.deleteMany({_id: {$in: deleteTask}})
+    await Todo.deleteMany({_id: {$in: deleteTask}})
     res.send('delete!')
 })
 
 
 
-router.put('/tasks', async (req, res) => {
-    let TodoList = await createModel(req.session.userInfo.username) 
+router.put('/tasks', async (req, res) => {//update state
     let {id, state} = req.body
-    await TodoList.updateOne({_id: id}, {state: (state ? 1 : 0)})
-    let task = await TodoList.findOne({_id: id})
+    await Todo.updateOne({_id: id}, {state: (state ? 1 : 0)})
+    let task = await Todo.findOne({_id: id})
     // console.log(task)
     res.json(task)
 })
 
 
 
-router.put('/tasksName', async (req, res) => {
-    let TodoList = await createModel(req.session.userInfo.username)
+router.put('/tasksName', async (req, res) => {//update name
     let {id, newName} = req.body
-    await TodoList.updateOne({_id: id}, {name: newName})
-    let task = await TodoList.findOne({_id: id})
+    await Todo.updateOne({_id: id}, {name: newName})
+    let task = await Todo.findOne({_id: id})
     res.json(task)
 })
 

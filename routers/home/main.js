@@ -49,8 +49,8 @@ router.post('/area', async(req, res) => {
     let {code} = req.body
     // console.log(code)
     req.session.weatherCode = code
-    // let weatherObj = await getWeather(code)
-    console.log(weatherObj)
+    let weatherObj = await getWeather(code)
+    // console.log(weatherObj)
     req.session.weather = {
         province: weatherObj.area[0][0],
         city: weatherObj.area[1][0],

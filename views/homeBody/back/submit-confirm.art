@@ -1,0 +1,125 @@
+{{extend '../../common/layout.art'}}
+
+{{block 'link'}}
+    {{include '../../common/jQuery.art'}}
+    {{include '../../common/layui.art'}}
+    <link rel="stylesheet" href="/css/submit-confirm.css">
+    <link rel="stylesheet" href="/css/inputTags.css">
+    <link rel="stylesheet" href="/css/iconfont.css">
+{{/block}}
+
+{{block 'main'}}
+    <div class="layui-container" id="wrap">
+        <div class="layui-upload-drag" id="drag">
+            <i class="layui-icon layui-icon-upload"></i>
+            <p>点击上传，或将文件拖拽到此处</p>
+            <div class="layui-hide" id="upload-img">
+              <hr>
+              <img src="" alt="上传成功后渲染" style="max-width: 196px">
+            </div>
+          </div>
+          <form action="" class="layui-form">
+              <div class="layui-form-item" id="select">
+                <label class="layui-form-label">
+                    分类
+                </label>
+                <div class="layui-input-inline">
+                    <select name="columns" lay-verity='required' id="given-col">
+                        {{each columns}}
+                            <option value = {{$value.name}}>#{{$value.name}}</option>
+                        {{/each}}
+                    </select>
+                </div>
+              </div>
+              <div class="layui-form-item">
+                <label class="layui-form-label mylabel" style="font-size: 15px;"> 增加</label>
+                <div class="layui-input-block tags">
+                    <input class="layui-input " type="text" id="column" placeholder="回车生成标签" autocomplete="off" style="width: 100px;"/>
+                </div>
+              </div>
+          </form>
+
+          <div id="btn-pos">
+            <button class="layui-btn layui-btn-radius" id="publish">发布</button>
+            <button class="layui-btn layui-btn-primary layui-btn-radius" id="exit">退出</button>
+          </div>
+    </div>
+{{/block}}
+
+
+{{block 'script1'}}
+  <script>
+
+      let imgPath = ''
+      
+      layui.config({
+          base: '/layuiPlugin/',
+          version: '1.0'
+      })
+      layui.use(['upload', 'element', 'layer', 'inputTags'], function(){
+          let upload = layui.upload
+          let element = layui.element
+          let layer = layui.layer
+          let inputTags = layui.inputTags
+          let form = layui.form
+           //拖拽上传
+          upload.render({
+            elem: '#drag'
+            ,url: '/home/back/cover' //改成您自己的上传接口
+            ,done: function(res){
+              layer.msg('上传成功');
+              layui.$('#upload-img').removeClass('layui-hide').find('img').attr('src', res.data.src);
+              // console.log(res)
+              imgPath = res.data.src
+            }
+          })
+
+          inputTags.render({
+              elem: '#column',
+              content: [],
+              pinArray: [],
+              openFlatContent: true,
+              aldaBtn: false,
+          })
+
+          $('#publish').on('click', function(){
+          let gcolumn = $('#given-col').val()
+          let addCol = inputTags.config.flatContent[0]
+
+          if(addCol){
+            let options = $('#given-col').find('option')
+            for(let i = 0; i < options.length; i++){
+                if(options[i].value === addCol){
+                    layer.msg('类别已存在')
+                    // console.log(addCol, 'add')
+                    return
+                }
+            }
+            // console.log(options)
+            gcolumn= addCol
+          }
+          parent.solveArticle(gcolumn, imgPath)
+          let index = parent.layer.getFrameIndex(window.name)
+          parent.layer.close(index)
+    })
+
+      })
+
+
+    $('#exit').on('click', function(){//撤销图片
+      $.ajax({
+        url: '/home/back/cover',
+        type: 'delete',
+        data: JSON.stringify({
+          imgPath
+        }),
+        contentType: 'application/json',
+        success: function(res){
+          // layer.msg(res)
+          let index = parent.layer.getFrameIndex(window.name)
+          parent.layer.close(index)
+        }
+      })
+    })        
+  </script>
+{{/block}}

@@ -1,0 +1,62 @@
+{{extend '../../common/layout.art'}}
+
+{{block 'link'}}
+    {{include '../../common/jQuery.art'}}
+    {{include '../../common/layui.art'}}
+    <style>
+    </style>
+{{/block}}
+
+{{block 'main'}}
+   <form action="" class="layui-form" id="form">
+       <div class="layui-form-item">
+           <div class="layui-input-inline" style="margin: 0 0 0 5px;">
+            <input type="text" name="column" placeholder="请输入分类标签" autocomplete="off" class="layui-input">
+           </div>
+       </div>
+       <div class="layui-form-item">
+        <div class="layui-input-inline" style="margin: 0 0 0 66px;">
+          <button class="layui-btn" lay-submit lay-filter="addColumn">立即添加</button>
+          <button class="layui-btn layui-btn-primary" id="exit">退出</button>
+        </div>
+      </div>
+   </form>
+{{/block}}
+
+
+{{block 'script1'}}
+   <script>
+       layui.use(['layer', 'form'], function(){
+           let form = layui.form
+           form.on('submit(addColumn)', function(data){
+               if(!data.field.column.trim().length){
+                   layer.msg('不能为空')
+                   return false
+               }
+               console.log(data.field)
+            $.ajax({
+                url: '/home/back/column',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify(data.field),
+                success:function(res){
+                    layer.msg('添加成功')
+                    let index = parent.layer.getFrameIndex(window.name)
+                    parent.layer.close(index)
+                    console.log(parent.layer)
+                    parent.callback('close')
+                },
+                error:function(err){
+                    layer.msg(err)
+                },
+            })
+            return false
+           })
+           $('#exit').on('click', function(){
+               let index = parent.layer.getFrameIndex(window.name)
+               parent.layer.close(index)
+               parent.callback('close')
+           })
+       })
+   </script>
+{{/block}}

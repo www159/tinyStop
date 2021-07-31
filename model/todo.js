@@ -4,17 +4,19 @@ let schema = new mongoose.Schema({
 
     name: {
         type: String,
-        require: true
+        required: true
     },
 
     state: {
         type: Number,
-        require: true
+        required: true
+    },
+
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        rel: 'User',
+        required: true
     }
 })
 
-createModel = (name) => {
-    return require('./privateDB').model(name, schema)
-}
-
-module.exports = {createModel}
+module.exports = require('./UserDB').model('Todo', schema, 'todo')

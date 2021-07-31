@@ -16,7 +16,7 @@ router.use('/main', require('./home/main'))
 
 
 
-router.get('/back', require('./home/back'))
+router.use('/back', require('./home/back'))
 
 
 

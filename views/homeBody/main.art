@@ -187,7 +187,8 @@
 
             carousel.render({
                 elem: '#display',
-                arrow: 'hover'
+                arrow: 'hover',
+                height: '312px'
             })
         })
     </script>

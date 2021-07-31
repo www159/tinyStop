@@ -24,7 +24,7 @@ layui.use(['form', 'element'], () => {
         }
         if(ele[0].id === 'back'){
             $.ajax({
-                url: '/home/back',
+                url: '/home/back/isLogin',
                 type: 'get',
                 success: function(res){//
                     if(res === 'unlogged'){
@@ -39,6 +39,10 @@ layui.use(['form', 'element'], () => {
                             }
                         })
                     }
+                    else{
+                        window.location.href = '/home/back'
+                    }
+                    // window.location.href = '/home/back'
                 }
             })
         }

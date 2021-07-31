@@ -7,17 +7,6 @@ const path = require('path')
 const app = express()
 
 
-//icon
-app.use(require('express-favicon')(path.join(__dirname, '/public/favicon.ico')))
-//create connection to DB
-// require('./model/connectToUsersDB')
-
-// require('./model/connectToTodoDB')
-//set favico
-// app.use(express.favicon())
-
-
-
 //using art template
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'art')
@@ -47,8 +36,8 @@ app.use(bodyParser.urlencoded({extended: false}))
 
 //cors send email
 app.use(require('cors')())
-
-
+//pre-connection
+require('./model/UserDB')
 
 //filter login router
 app.use('/login', require('./routers/login'))

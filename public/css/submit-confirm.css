@@ -1,0 +1,25 @@
+#wrap{
+    margin-top: 3%;
+}
+
+
+#wrap form{
+    float: right;
+    margin-right: 2%;
+}
+/* 
+.layui-form-label{
+    padding-left: 0;
+    padding-right: 5px;
+} */
+
+#drag{
+    padding: 5%;
+    margin-left: 2%;
+}
+
+#btn-pos{
+    margin-top: 15%;
+    margin-right: 4%;
+    float: right;
+}

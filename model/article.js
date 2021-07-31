@@ -6,11 +6,10 @@ let schema = {
         required: true
     },
 
-    column: {
+    column: [{
         type: mongoose.Schema.Types.ObjectId,
         rel: 'Column',
-        required: true
-    },
+    }],
 
     author: {
         type: mongoose.Schema.Types.ObjectId,

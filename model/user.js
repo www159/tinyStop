@@ -8,7 +8,8 @@ let schema = new mongoose.Schema({
     },
     email:{
         type: String,
-        require: true
+        require: true,
+        unique: true
     },
 
     password:{
@@ -19,16 +20,8 @@ let schema = new mongoose.Schema({
 // const conUser = require('./connectToUsersDB').conUser
 
 //解析promise
-let getUser = async () => {
-    try{
-        return (await require('./connectToUsersDB')()).model('user', schema)
-    }
-    catch(e){
-        console.log(e)
-    }
-}
 
-let User = getUser()
+let User = require('./UserDB').model('Users', schema, 'users')
 
 const bcrypt = require('bcrypt')
 let createDefault = async () => {
