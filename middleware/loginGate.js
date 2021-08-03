@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
     // }
     //TODO add admin session
     req.session.userInfo = {
-        _id: '60f77b6769b55150c07db440',
+        _id: '6104fe44c1e10301d8efde54',
         username: 'www159',
         email: '2107795244@qq.com',
         password: '064919'

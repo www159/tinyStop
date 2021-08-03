@@ -1,0 +1,100 @@
+{{extend '../../common/layout.art'}}
+
+{{block 'title'}}
+editor
+{{/block}}
+
+{{block 'link'}}
+<!-- <link rel="stylesheet" href="/css/back.css"> -->
+<link rel="stylesheet" href="/public/layui/css/layui.css">
+<link rel="stylesheet" href="/tuiEditor/toastui-editor.min.css">
+<link rel="stylesheet" href="/tuiEditor/toastui-editor-dark.css">
+<link rel="stylesheet" href="/tuiEditor/codeTheme/prism.min.css">
+<link rel="stylesheet" href="/tuiEditor/toastui-editor-plugin-code-syntax-highlight.min.css">
+<link rel="stylesheet" href="/tuiEditor/toastui-editor-plugin-color-syntax.min.css">
+<link rel="stylesheet" href="/tuiEditor/katex.min.css">
+<link rel="stylesheet" href="/tuiEditor/tui-color-picker.min.css">
+<script src="/tuiEditor/toastui-editor-all.min.js"></script>
+<script src="/tuiEditor/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
+<script src="/tuiEditor/tui-color-picker.min.js"></script>
+<script src="/tuiEditor/toastui-editor-plugin-color-syntax.min.js"></script>
+<script src="/tuiEditor/katex.min.js"></script>
+<script src="/tuiEditor/customPlugin/katex.js"></script>
+<script src="/public/layui/layui.js"></script>
+{{/block}}
+
+{{block 'main'}}
+<div class="layui-container">
+    <div class="layui-form">
+        <div class="layui-form-item" style="margin-top: 1%; margin-bottom: 3%;">
+            <div class="layui-form-label">
+                标题
+            </div>
+           <div class="layui-col-md6">
+            <input type="text" name="title" 
+            autocomplete="off" placeholder="请输入标题" class="layui-input layui-border-green">
+           </div>
+           <button lay-submit class="layui-btn layui-btn-radius layui-col-md1 layui-col-md-offset1"
+                    id="submit" lay-filter="article">发布</button>
+        </div>
+    </div>
+    <div id="layer-tiny">
+        <div class="" id="editor"></div>
+    </div>
+</div>
+{{/block}}
+
+{{block 'script1'}}
+<script>
+    const Editor = toastui.Editor
+    const {codeSyntaxHighlight, colorSyntax} = Editor.plugin
+    // console.log(codeSyntaxHighlight, colorSyntax)
+    let editor = new Editor({
+        el: document.querySelector('#editor'),
+        height: '500px',
+        previewStyle: 'vertical',
+        plugins: [codeSyntaxHighlight, colorSyntax, katexPlugin],
+    })
+
+
+
+    layui.use(['element', 'form'], function(){
+                element = layui.element,
+                form = layui.form
+
+            form.on('submit(article)', function(data){//生成中间表单
+                if(!$('#edit-title input').val().trim()){
+                    layer.msg('标题不能为空')
+                    return false
+                }
+                layer.open({
+                    type: 2,
+                    title: '完善信息',
+                    area: ['50%', '50%'],
+                    content: ['/home/back/editor/submitConfirm', 'no'],
+                })
+                return false
+            })
+            
+         })
+         //回调函数集
+        function solveArticle(column, imgPath){
+            // console.log($('#edit-title input').val(), tinymce.activeEditor.getContent())
+            $.ajax({
+                url: '/home/back/editor/article',
+                type: 'post',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    title: $('#edit-title input').val(),
+                    column,
+                    cover: imgPath,
+                    content: editor.getMarkdown()
+                }),
+                success: function(res){
+                    layer.msg(res)
+                }
+            })
+            // console.log(column)
+        }
+</script>
+{{/block}}

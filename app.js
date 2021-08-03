@@ -44,6 +44,8 @@ app.use('/login', require('./routers/login'))
 
 app.use('/home', require('./routers/home'))
 
+app.use('/view', require('./routers/view'))
+
 
 
 // filter error msg

@@ -8,7 +8,7 @@ let schema = new mongoose.Schema({
 
     author: {
         type: mongoose.Schema.Types.ObjectId,
-        rel: 'Users',
+        rel: 'User',
         require: true
     }
 })

@@ -1,8 +1,10 @@
-#layer-tiny{
-    width: 100%;
+#left-nav{
+    top: 58px;
 }
 
-#edit-title{
-    margin-top: 1%;
-    margin-bottom: 3%;
+#pb-btn{
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 4em;
+    transform: scale(1.5);
 }

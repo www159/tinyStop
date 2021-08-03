@@ -1,30 +1,37 @@
 const router = require('express').Router()
+// const {createDefault} = require('../model/user')
 
-
-
+// createDefault()
 router.get('/', (req, res) => {
-    res.redirect('home/main')
+    res.redirect('/home/main')
 })
 
 
 
-router.get('/func', require('./home/func'))
+// router.use('/view', require('./view'))
 
 
 
-router.use('/main', require('./home/main'))
+router.use('/func', require('./home/routers/func'))
+
+
+//服务器端缓存
+
+
+router.use('/main', require('./home/routers/main'))
 
 
 
-router.use('/back', require('./home/back'))
+router.use('/back', require('./home/routers/back'))
 
 
 
-router.use('/todo', require('./home/todo'))
+// router.use('/todo', require('./home//fuc/routers/todo'))
 
 
 
-router.use('/btn', require('./home/routers/funcRouter'))
+// router.use('/btn', require('./home/routers/funcRouter'))
+
 
 
 

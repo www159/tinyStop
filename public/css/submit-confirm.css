@@ -19,7 +19,9 @@
 }
 
 #btn-pos{
-    margin-top: 15%;
-    margin-right: 4%;
+    position: fixed;
+    /* margin-right: 4; */
+    top: 230px;
+    left: 550px;
     float: right;
 }

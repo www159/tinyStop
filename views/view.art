@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/layui/css/layui.css">
+    <link rel="stylesheet" href="/css/view.css">
+    <link rel="stylesheet" href="/tuiEditor/toastui-editor.min.css">
+    <link rel="stylesheet" href="/tuiEditor/toastui-editor-dark.css">
+    <link rel="stylesheet" href="/tuiEditor/codeTheme/prism.min.css">
+    <link rel="stylesheet" href="/tuiEditor/toastui-editor-plugin-code-syntax-highlight.min.css">
+    <link rel="stylesheet" href="/tuiEditor/toastui-editor-plugin-color-syntax.min.css">
+    <link rel="stylesheet" href="/tuiEditor/katex.min.css">
+    <link rel="stylesheet" href="/tuiEditor/tui-color-picker.min.css">
+    <script src="/tuiEditor/toastui-editor-all.min.js"></script>
+    <script src="/tuiEditor/toastui-editor-plugin-code-syntax-highlight-all.min.js"></script>
+    <script src="/tuiEditor/tui-color-picker.min.js"></script>
+    <script src="/tuiEditor/toastui-editor-plugin-color-syntax.min.js"></script>
+    <script src="/tuiEditor/katex.min.js"></script>
+    <script src="/tuiEditor/customPlugin/katex.js"></script>
+    <script src="/layui/layui.js"></script>
+    <script src="/js/jquery.js"></script>
+</head>
+<body id="scrolldiv">
+   <div class="layui-container" id="body-wrap">
+    {{if cover}}
+    <div id="img-wrap">
+        <img src="{{cover}}" alt="封面">
+    </div>
+    {{/if}}
+       <div class="layui-row" id="from-context">
+           <span class="layui-badge">所属目录</span><a href="javasript:void(0)" id="context">{{column}}</a>
+       </div>
+    <hr id="myhr">
+    <div class="layui-row" id="title">
+        example
+    </div>
+    <hr id="myhr">
+    <div class="layui-row" id="info">
+        <span class="layui-badge layui-bg-blue">作者</span>
+        <span>{{author}}</span>
+        <span class="layui-badge layui-bg-blue" id="date">日期</span>
+        <span>{{date}}</span>
+    </div>
+
+    <!-- <ul class="layui-fixbar"><li class="layui-icon layui-fixbar-top" lay-type="top" style="display: list-item;"></li></ul> -->
+    <div id="viewer"></div>
+    <div class="layui-row">
+        
+    </div>
+   </div>
+    <div id="fuc" style="display: none;" data-chon='false'>{{content}}</div>
+
+    <script>
+        const Editor = toastui.Editor
+        const {codeSyntaxHighlight, colorSyntax} = Editor.plugin
+        // console.log(codeSyntaxHighlight, colorSyntax)
+        let editor = Editor.factory({
+            el: document.querySelector('#viewer'),
+            viewer: true,
+            previewStyle: 'vertical',
+            plugins: [codeSyntaxHighlight, colorSyntax, katexPlugin],
+            initialValue: document.querySelector('#fuc').innerText
+        })
+    </script>
+
+    <script>
+
+        let nextId = null, prevId = null
+
+        $.ajax({
+            url: '/view/near',
+            type: 'get',
+            success(res){
+                nextId = res.nextId
+                prevId = res.prevId
+                console.log(res)
+            }
+        })
+
+
+        let show = false
+        let guideLayer
+
+        layui.use('util', function(){
+            let util = layui.util
+            util.fixbar({
+                bar4: true,
+                bar5: true,
+                bar7: true,
+                showHeight: 100,
+                css:{
+                    right: '30px'
+                }
+                ,click: function(type, react){
+                //   console.log(type, react);
+                  if(type === 'bar5'){//截取主页目录模式
+                    if(!show){
+                        show = true
+                        guideLayer = layer.msg('',{
+                        time: 0,
+                        btn: ['退出', '上一篇', '下一篇'],
+                        btn1: function(){
+                            window.close()
+                            },
+                        btn3: function(){//
+                            if(nextId){
+                                window.location.href = `/view/?_id=${nextId}`
+                            }
+                            else{
+                                layer.msg('没有下一篇')
+                            }
+                        },
+                        btn2: function(){
+                            if(prevId){
+                                window.location.href = `/view/?_id=${prevId}`
+                            }
+                            else{
+                                layer.msg('没有上一篇')
+                            }
+                        },
+                        })
+                        // console.log(guideLayer, show)
+                    }
+                    else{
+                        show = false
+                        layer.close(guideLayer)
+                    }
+                    }
+                    
+                  if(type === 'bar4'){//服务端操作
+                      if(react){
+                          $.ajax({
+                              url: '/home/view/like',
+                              success: function(res){
+                                  console.log(res)
+                              },
+                              error: function(err){
+                                  layer.msg(err)
+                              }
+                          })
+                      }
+                      else{
+                        $.ajax({
+                              url: '/home/view/dislike',
+                              success: function(res){
+                                  console.log(res)
+                              },
+                              error: function(err){
+                                  layer.msg(err)
+                              }
+                          })
+                      }
+                  }
+                  if(type === 'bar7'){
+                      if(react){
+                        $.ajax({
+                              url: '/home/view/collect',
+                              success: function(res){
+                                  console.log(res)
+                              },
+                              error: function(err){
+                                  layer.msg(err)
+                              }
+                          })
+                      }
+                      else{
+                        $.ajax({
+                              url: '/home/view/discollect',
+                              success: function(res){
+                                  console.log(res)
+                              },
+                              error: function(err){
+                                  layer.msg(err)
+                              }
+                          })
+                      }
+                  }
+                }
+            })
+        })
+        // console.log($('[data-chon="false"]').data('chon'))
+    </script>
+</body>
+</html>

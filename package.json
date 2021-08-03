@@ -19,6 +19,7 @@
     "express-art-template": "^1.0.1",
     "express-favicon": "^2.0.1",
     "express-session": "^1.17.2",
+    "formatDate": "^1.0.0",
     "jQuery": "^1.7.4",
     "layui": "^2.6.8",
     "mongoose": "^5.13.2",

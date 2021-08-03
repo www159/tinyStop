@@ -10,7 +10,7 @@ let filterStr = 'All'
 let clearBtn = $('.clear-completed')
 // [{_id: "60fa718bec5e503b14e39b65", name: "喝酒", state: 0, __v: 0}]
 $.ajax({//获得数据
-	url: '/home/todo/tasks',
+	url: '/home/func/todo/tasks',
 	type: 'get',
 	success: function(res) {
 		// console.log(res)
@@ -24,7 +24,7 @@ taskInput.on('keyup', function(e){//回车添加任务
 		let name = $(this).val()
 		if(name.trim().length !== 0){
 			$.ajax({
-				url: '/home/todo/addTask',
+				url: '/home/func/todo/addTask',
 				type: 'post',
 				contentType: 'application/json',
 				data: JSON.stringify({
@@ -48,7 +48,7 @@ taskBox.on('click', '.destroy', function(){//删除任务
 	let id = $(this).attr('data-id')
 	console.log(id)
 	$.ajax({
-		url: `/home/todo/tasks/${id}`,
+		url: `/home/func/todo/tasks/${id}`,
 		type: 'delete',
 		success:function(res){
 			// console.log(res)
@@ -64,7 +64,7 @@ taskBox.on('change', '.toggle', function(){//打勾
 	const id = $(this).siblings('button').attr('data-id')
 	// console.log(id)
 	$.ajax({
-		url: '/home/todo/tasks',
+		url: '/home/func/todo/tasks',
 		type: 'put',
 		data: JSON.stringify({
 			id,
@@ -125,7 +125,7 @@ $('.clear-completed').on('click', function(){
 	})
 	console.log(deleteTask)
 	$.ajax({
-		url: '/home/todo/clearCompleted',
+		url: '/home/func/todo/clearCompleted',
 		type: 'delete',
 		data: JSON.stringify({deleteTask}),
 		contentType: 'application/json'
@@ -141,7 +141,7 @@ function putName(input){
 	let newName = input.val()
 	let id = input.siblings('div').find('button').attr('data-id')
 	$.ajax({
-		url: '/home/todo/tasksName',
+		url: '/home/func/todo/tasksName',
 		type: 'put',
 		contentType: 'application/json',
 		data: JSON.stringify({

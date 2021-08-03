@@ -21,7 +21,7 @@ let schema = new mongoose.Schema({
 
 //解析promise
 
-let User = require('./UserDB').model('Users', schema, 'users')
+let User = require('./UserDB').model('User', schema, 'user')
 
 const bcrypt = require('bcrypt')
 let createDefault = async () => {

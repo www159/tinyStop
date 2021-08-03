@@ -1,99 +1,35 @@
 {{extend '../common/home.art'}}
 
 {{block 'link1'}}
-    <link rel="stylesheet" href="/css/back.css">
-    <script src="/js/tex-mml-svg.js"></script>
-    <!-- <script src="/js/tinyLatex.js"></script> -->
+<!-- <link rel="stylesheet" href="/layui/css/layui.css"> -->
+<link rel="stylesheet" href="/css/back.css">
+<!-- <script src="/layui/layui.js"></script> -->
 {{/block}}
 
 {{block 'body'}}
-    <div class="layui-layout-body">
-        <div class="layui-container">
-            <div class="layui-tab">
-                <ul class="layui-tab-title">
-                    <li class="layui-this">
-                        编辑
-                    </li>
-                    <li>
-                        管理
-                    </li>
-                </ul>
-                <div class="layui-tab-content">
-                    <div class="layui-tab-item layui-show">
-                        <div class="layui-form">
-                            <div class="layui-form-item" id="edit-title">
-                                <div class="layui-form-label">
-                                    标题
-                                </div>
-                               <div class="layui-col-md6">
-                                <input type="text" name="title" 
-                                autocomplete="off" placeholder="请输入标题" class="layui-input layui-border-green">
-                               </div>
-                               <button lay-submit class="layui-btn layui-btn-radius layui-col-md1 layui-col-md-offset1"
-                                        id="submit" lay-filter="article">发布</button>
-                            </div>
-                        </div>
-                        <div id="layer-tiny">
-                            <textarea name="" id="editor">呵呵</textarea>
-                        </div>
-                    </div>
-
-                    <div class="layui-tab-item">
-                        呵呵
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="layui-side">
+    <ul class="layui-nav layui-nav-tree layui-nav-side" id="left-nav">
+        <a href="/home/back/editor" class="layui-btn layui-btn-lg layui-btn-radius" id="pb-btn">发布</a>
+        <li class="layui-nav-item layui-nav-itemed">
+            <a href="javascript:;">管理</a>
+            <dl class="layui-nav-child">
+              <dd><a href="javascript:;">内容管理</a></dd>
+              <dd><a href="javascript:;">分类管理</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item">
+            <a href="javascript:;">解决方案</a>
+            <dl class="layui-nav-child">
+              <dd><a href="">移动模块</a></dd>
+              <dd><a href="">后台模版</a></dd>
+              <dd><a href="">电商平台</a></dd>
+            </dl>
+          </li>
+          <li class="layui-nav-item"><a href="">产品</a></li>
+          <li class="layui-nav-item"><a href="">大数据</a></li>
+        </ul>
+</div>
 {{/block}}
 
 {{block 'script'}}
-    <script>
-        layui.extend({
-            tinymce: '/layuiPlugin/tinymce/tinymce',
-        })
-             .use(['element','tinymce', 'form'], function(){
-                let editor = layui.tinymce,
-                    element = layui.element,
-                    form = layui.form
-                editor.render({
-                    elem: '#editor',
-                    height: 500,
-                })
-
-                form.on('submit(article)', function(data){//生成中间表单
-                    if(!$('#edit-title input').val().trim()){
-                        layer.msg('标题不能为空')
-                        return false
-                    }
-                    layer.open({
-                        type: 2,
-                        title: '完善信息',
-                        area: ['50%', '50%'],
-                        content: ['/home/back/submitConfirm', 'no'],
-                    })
-                    return false
-                })
-                
-             })
-             //回调函数集
-            function solveArticle(column, imgPath){
-                // console.log($('#edit-title input').val(), tinymce.activeEditor.getContent())
-                $.ajax({
-                    url: '/home/back/article',
-                    type: 'post',
-                    contentType: 'application/json',
-                    data: JSON.stringify({
-                        title: $('#edit-title input').val(),
-                        column,
-                        cover: imgPath,
-                        content: tinymce.activeEditor.getContent()
-                    }),
-                    success: function(res){
-                        layer.msg(res)
-                    }
-                })
-                // console.log(column)
-            }
-    </script>
 {{/block}}

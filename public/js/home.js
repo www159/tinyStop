@@ -74,7 +74,7 @@ layui.use(['form', 'element'], () => {
         let checked = data.elem.checked
         if(checked){
             $.ajax({
-                url:'/home/btn/signal/on',
+                url:'/home/func/btn/signal/on',
                 type: 'get',
                 success: function(res){
                     layer.close(loader)
@@ -90,7 +90,7 @@ layui.use(['form', 'element'], () => {
         }
         else{
             $.ajax({
-                url:'/home/btn/signal/off',
+                url:'/home/func/btn/signal/off',
                 type: 'get',
                 success: function(res){
                     layer.close(loader)

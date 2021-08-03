@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 
-const Todo = require('../../model/todo')
+const Todo = require('../../../../../model/todo')
 
 router.get('/tasks', async (req, res) => {//get all tasks
     let tasks = await Todo.find({author: req.session.userInfo._id}).lean()

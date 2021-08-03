@@ -38,11 +38,10 @@
                 </div>
               </div>
           </form>
-
-          <div id="btn-pos">
-            <button class="layui-btn layui-btn-radius" id="publish">发布</button>
-            <button class="layui-btn layui-btn-primary layui-btn-radius" id="exit">退出</button>
-          </div>
+    </div>
+    <div id="btn-pos">
+      <button class="layui-btn layui-btn-radius" id="publish">发布</button>
+      <button class="layui-btn layui-btn-primary layui-btn-radius" id="exit">退出</button>
     </div>
 {{/block}}
 

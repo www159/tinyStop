@@ -91,61 +91,11 @@
                     <span class="iconfont icon-liebiao"></span>
                   </button>
               </div> 
-              <div class="layui-row">
                   <div id="arti-list">
-                    <div id="arti-info">
-                      <div id="arti-info-r">
-                        <div id="arti-cover">
-                          <a href="" target="_blank" rel="noopener noreferrer">
-                            <img src="/img/1.jpg" alt="test">
-                          </a>
-                        </div>
-                      </div>
-                      <div id="arti-info-l">
-                        <a href="javascript:void(0);">
-                          <h2>呵呵呵吼吼吼吼吼吼吼吼吼吼吼吼吼吼吼吼呵呵呵</h2>
-                        </a>
-                        <div id="arti-footer">
-                          <div id="author">
-                            www
-                          </div>
-                          <div id="comment">
-                            0点赞
-                          </div>
-                          <div id="date">
-                            2001-1-1
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div id="arti-info">
-                      <div id="arti-info-r">
-                        <div id="arti-cover">
-                          <a href="" target="_blank" rel="noopener noreferrer">
-                            <img src="/img/1.jpg" alt="test">
-                          </a>
-                        </div>
-                      </div>
-                      <div id="arti-info-l">
-                        <a href="javascript:void(0);">
-                          <h2>吼吼吼吼呵呵呵</h2>
-                        </a>
-                        <div id="arti-footer">
-                          <div id="author">
-                            www
-                          </div>
-                          <div id="comment">
-                            0点赞
-                          </div>
-                          <div id="date">
-                            2001-1-1
-                          </div>
-                        </div>
-                      </div>
+            
                     </div>
                   </div>
               </div>   
-          </div>
         </div>
       </div>
 
@@ -154,31 +104,35 @@
 
 {{block 'script'}}
     <script type="text/html" id="flow-li">
-      <div id="arti-info">
+      <%# layui.each(d.articles, function(index, item){ %>
+      <div id="arti-info" data-value='<%item._id%>'>
         <div id="arti-info-r">
           <div id="arti-cover">
             <a href="" target="_blank" rel="noopener noreferrer">
-              <img src="./1.jpg" alt="test">
+              <%# if(item.cover){ %>
+              <img src='<%item.cover%>' alt="test">
+              <%# }%>
             </a>
           </div>
         </div>
         <div id="arti-info-l">
           <a href="javascript:void(0);">
-            <h2><%title%></h2>
+            <h2><%item.title%></h2>
           </a>
           <div id="arti-footer">
             <div id="author">
-              <%author%>
+              <%item.author%>
             </div>
             <div id="comment">
-              <%good%>点赞
+              1点赞
             </div>
             <div id="date">
-              <%date%>
+              <%item.data%>
             </div>
           </div>
         </div>
       </div>
+      <%# }) %>
     </script>
 
     <script>
@@ -198,13 +152,38 @@
     <script>
    
 
-      layui.use('flow', function(){
-        let flow = layui.flow
+      layui.use(['flow', 'laytpl'], function(){
+        let flow = layui.flow,
+            laytpl = layui.laytpl
+        laytpl.config({
+          open: '<%',
+          close: '%>',
+        })
         flow.load({
           elem: '#arti-list',
           scrollElem: '#arti-list',
-          done: function(page, next){
-
+          mb: 10,
+          done: function(page, next){ 
+            let artArry = []
+            $.ajax({
+              url: '/home/main/article',
+              type: 'get',
+              data: {
+                page,
+                perPage: 5
+              },
+              contentType: 'application/x-www-form-urlencoded'
+            })
+            .done(function(res){
+              let {pages, articles} = res
+              // console.log(articles)
+              let html = laytpl($('#flow-li').html()).render({
+                articles: articles
+              })
+              // console.log(html)
+              next(html, pages)
+              // console.log($('#flow-li').html())
+            })
           }
         })
       })
@@ -221,7 +200,7 @@
     })
 
     $('#weather-detail').on('click', function(e){
-      layer.msg('代开发>_<')
+      layer.msg('待开发>_<')
     })
       
     $('#micro').on('click', function(e){
@@ -241,5 +220,13 @@
         $('#wind-direction').text(data.windDirection)
         $('#wind-rank').text(data.windRank)
       }
+    </script>
+
+    <script>
+      let list = $('#arti-list')
+      list.on('click', '#arti-info', function(){
+        console.log(1)
+        window.open(`/view/?_id=${$(this).data('value')}`)
+      })
     </script>
 {{/block}}

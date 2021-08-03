@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const SignalServer = require('./plugins/signalServer')
+const SignalServer = require('../plugins/signalServer')
 let signalserver = new SignalServer(4399)
 
 router.get('/signal/on', (req, res) => {

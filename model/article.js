@@ -17,7 +17,7 @@ let schema = {
         required: true
     },
 
-    data: {
+    date: {
         type: Date,
         default: Date.now
     },
