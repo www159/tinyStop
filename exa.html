@@ -1,0 +1,14 @@
+<body>
+    <hh>
+    </hh>
+    <script>
+        const hh = document.querySelector('hh')
+        let bosses = []
+        fetch('http://localhost:8080/waimai/boss/bossName')
+        .then(res => {
+            console.log(res, typeof res)
+        })
+        .then(data => console.log(data))
+        .then(() => console.log(bosses))
+    </script>
+</body>

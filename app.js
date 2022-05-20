@@ -19,12 +19,12 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 
 
-//work the cookie client sends
-const session = require('express-session')
-//session decoding
-app.use(session({secret: 'session-key'})) 
-//login gate
-app.use(require('./middleware/loginGate'))
+// //work the cookie client sends
+// const session = require('express-session')
+// //session decoding
+// app.use(session({secret: 'session-key'})) 
+// //login gate
+// app.use(require('./middleware/loginGate'))
 
 
 
@@ -37,16 +37,15 @@ app.use(bodyParser.urlencoded({extended: false}))
 //cors send email
 app.use(require('cors')())
 //pre-connection
-require('./model/UserDB')
 
 //filter login router
-app.use('/login', require('./routers/login'))
+// app.use('/login', require('./routers/login'))
 
-app.use('/home', require('./routers/home'))
+// app.use('/home', require('./routers/home'))
 
-app.use('/view', require('./routers/view'))
+// app.use('/view', require('./routers/view'))
 
-
+app.use('/waimai', require('./routers/waimai/main.js'))
 
 // filter error msg
 // app.use((err, req, res, next) => {
@@ -57,6 +56,6 @@ app.use('/view', require('./routers/view'))
 
 
 //start httpserver
-app.listen(80, () => {
+app.listen(8080, () => {
     console.log("server start...")
 })
